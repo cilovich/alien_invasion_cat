@@ -14,6 +14,7 @@ import pygame
 
 from settings import Settings
 from spaceship import Spaceship
+from bullet import Bullet
 
 
 class AlienInvasionCats():
@@ -33,6 +34,7 @@ class AlienInvasionCats():
 
         # Назначение звездолёта.
         self.spaceship = Spaceship(self)
+        self.bullets = pygame.sprite.Group()
 
     def _chek_events(self):
         """Реагирует на нажатие клавиш и события мыши."""
@@ -61,12 +63,21 @@ class AlienInvasionCats():
             self.spaceship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.spaceship.moving_left = False
+        elif event.key == pygame.K_SPACE:
+            self._fire.bullet()
+
+    def _fire_bullet(self):
+        """"Создание нового снаряда и включение в группу bullets."""
+        new_bullet = Bullet(self)
+        self.bullets.add(new.bullet)
 
     def _update_screen(self):
         """Обновляет и отображает новый экран."""
         self.screen.fill(self.settings.bg_color)
         # Обновление позиции звездолёта в его текущем положении.
         self.spaceship.blitme()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
         # Отображение последнего прорисованного экрана.
         pygame.display.flip()
 
@@ -75,6 +86,7 @@ class AlienInvasionCats():
         while True:
             self._chek_events()
             self.spaceship.update()
+            self.bullets.update()
             self._update_screen()
 
 
