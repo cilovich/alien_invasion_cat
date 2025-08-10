@@ -35,21 +35,32 @@ class AlienInvasionCats():
         self.spaceship = Spaceship(self)
 
     def _chek_events(self):
+        """Реагирует на нажатие клавиш и события мыши."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    # Переместить корабль вправо.
-                    self.spaceship.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    # Переместить корабль влево.
-                    self.spaceship.moving_left = True
+                self._chek_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    self.spaceship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    self.spaceship.moving_left = False
+                self._chek_keyup_events(event)
+
+    def _chek_keydown_events(self, event):
+        """Реагирует на нажатие клавиш."""
+        if event.key == pygame.K_RIGHT:
+            # Переместить корабль вправо.
+            self.spaceship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            # Переместить корабль влево.
+            self.spaceship.moving_left = True
+        elif event.key == pygame.K_ESCAPE:
+            sys.exit()
+
+    def _chek_keyup_events(self, event):
+        """"Реагирует на отпускание клавиш."""
+        if event.key == pygame.K_RIGHT:
+            self.spaceship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.spaceship.moving_left = False
 
     def _update_screen(self):
         """Обновляет и отображает новый экран."""
@@ -69,5 +80,5 @@ class AlienInvasionCats():
 
 if __name__ == '__main__':
     # Создание экземпляра игры и запуска её процесса.
-    aic= AlienInvasionCats()
+    aic = AlienInvasionCats()
     aic.run_game()
