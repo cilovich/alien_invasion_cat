@@ -25,9 +25,9 @@ class Spaceship():
 
     def update(self):
         """"Обновляет позицию корабля с учётом флага."""
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.spaceship_speed
-        elif self.moving_left:
+        elif self.moving_left and self.rect.left > 0:
             self.x -= self.settings.spaceship_speed
         
         # Обновление атрибута rect на основании self.x
