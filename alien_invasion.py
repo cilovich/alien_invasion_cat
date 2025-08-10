@@ -64,12 +64,13 @@ class AlienInvasionCats():
         elif event.key == pygame.K_LEFT:
             self.spaceship.moving_left = False
         elif event.key == pygame.K_SPACE:
-            self._fire.bullet()
+            self._fire_bullet()
 
     def _fire_bullet(self):
         """"Создание нового снаряда и включение в группу bullets."""
-        new_bullet = Bullet(self)
-        self.bullets.add(new.bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
     def _update_screen(self):
         """Обновляет и отображает новый экран."""
@@ -88,6 +89,11 @@ class AlienInvasionCats():
             self.spaceship.update()
             self.bullets.update()
             self._update_screen()
+
+            # Удаление снарядов, вышедших за край экрана.
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
 
 
 if __name__ == '__main__':

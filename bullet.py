@@ -12,12 +12,13 @@ class Bullet(Sprite):
         """Создание объект снарядов текущей позиции корабля."""
         super().__init__()
         self.screen = aic_game.screen
-        self.settings = aic_game.settings.bullet_color
+        self.settings = aic_game.settings
+        self.color = self.settings.bullet_color
 
         # Создание снарядов позиции (0, 0) и назначение правильной позиции.
-        self.rect = pygame.Rect(0, 0, self.settings.bullet_wight,
-                                self.settings.bullet_height)
-        self.rect.midtop = aic_game.spaseship.rect.midtop
+        self.rect = pygame.Rect(0, 0, self.settings.bullet_width,
+                                self.settings.bullet_heigth)
+        self.rect.midtop = aic_game.spaceship.rect.midtop
 
         # Позиция снаряда хранится в вещественном формате.
         self.y = float(self.rect.y)
