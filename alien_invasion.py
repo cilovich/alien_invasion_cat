@@ -15,6 +15,7 @@ import pygame
 from settings import Settings
 from spaceship import Spaceship
 from bullet import Bullet
+from alien_cats import Alien_Cats
 
 
 class AlienInvasionCats():
@@ -35,7 +36,10 @@ class AlienInvasionCats():
         # Назначение звездолёта.
         self.spaceship = Spaceship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.AbstractGroup()
 
+        self._create_fleet()
+        
     def _chek_events(self):
         """Реагирует на нажатие клавиш и события мыши."""
         for event in pygame.event.get():
@@ -72,6 +76,19 @@ class AlienInvasionCats():
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _update_bullets(self):
+        # Удаление снарядов, вышедших за край экрана.
+        self.bullets.update()
+
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+
+    def _create_fleet(self):
+        # Создание группировки пришльцев-котов.
+        alien_cats = Alien_Cats(self)
+        self.aliens.add(alien_cats)
+
     def _update_screen(self):
         """Обновляет и отображает новый экран."""
         self.screen.fill(self.settings.bg_color)
@@ -79,6 +96,7 @@ class AlienInvasionCats():
         self.spaceship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         # Отображение последнего прорисованного экрана.
         pygame.display.flip()
 
@@ -87,13 +105,8 @@ class AlienInvasionCats():
         while True:
             self._chek_events()
             self.spaceship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
-
-            # Удаление снарядов, вышедших за край экрана.
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
 
 
 if __name__ == '__main__':
